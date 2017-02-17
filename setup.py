@@ -4,7 +4,7 @@ from setuptools import setup
 README = open(os.path.join(os.path.dirname(__file__), 'README.rst')).read()
 
 
-version = '0.0.29'
+version = '1.0.0'
 
 setup(
     name='kimo',
@@ -12,11 +12,11 @@ setup(
     packages=['kimo'],
     install_requires=[
         'requests>=2',
-        'Flask==0.12',
-        'psutil==2.1.1',
-        'terminaltables==3.1.0',
-        'mysql-connector',
-        'waitress==1.0.2',
+        'Flask>=0.12',
+        'psutil>=2',
+        'terminaltables>=3',
+        'mysql-connector>=2',
+        'waitress>=1',
     ],
     include_package_data=True,
     license='BSD License',
