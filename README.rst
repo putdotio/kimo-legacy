@@ -19,7 +19,7 @@ Usage
 **Server-Side**
 
 
-First, we need to run ``kimo-server`` on each server that makes MySQL queries. We need this because, ``kimo-server`` gets connections from host that runs on and provide that information to client via HTTP API.
+First, we need to run ``kimo-server`` on each server that makes MySQL queries. We need to do this because, ``kimo-server`` gets connections from the host that ``kimo-server`` runs on and provides that information to client via HTTP API.
 
 ::
 
@@ -31,7 +31,7 @@ First, we need to run ``kimo-server`` on each server that makes MySQL queries. W
 
 **Command Line**
 
-There are some optioanl arguments for command line interface:
+There are some optional arguments for command line interface:
 
 
 ::
@@ -73,8 +73,10 @@ There are some optioanl arguments for command line interface:
       'tcpproxy_mgmt_port': 3307,
       'kimo_server_port': 6000,
   }
-  kimo(config)
-
+  result = kimo(config)
+  print result[0]
+  
+  >>  EnhancedProcess(process=Process(id=1504, user=u'root', host=u'127.0.0.1:54553', db=u'information_schema', command=u'Query', time=547, state=u'User sleep', info=u'select sleep(100)'), details=ProcessDetails(pid=16430, name=u'python', cmdline=u'python -m putio.shell', hostname=u'vagrant.putio.club', connection_status=u'ESTABLISHED'))
 
 That's it!
 
