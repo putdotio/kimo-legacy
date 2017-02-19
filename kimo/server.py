@@ -61,5 +61,5 @@ def main():
         sys.stderr.write("need to run with root permissions\n")
         sys.exit(1)
 
-    app.debug = args.debug
+    app.debug = True
     serve(app, host='0.0.0.0', port=defaults.KIMO_SERVER_PORT)

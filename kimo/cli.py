@@ -40,7 +40,6 @@ def update_config(config, config_key, parser, parser_key):
 def main():
     # TODO:
     # Stop all running threads with Keyboard Interrupt
-    # Verbose mode for debug logs.
     # Cache latest result on local disk.
 
     parser = argparse.ArgumentParser(description='Find processes of MySQL queries.')
@@ -56,16 +55,14 @@ def main():
     parser.add_argument('--filter-query-id', type=int, help='Filter by query ID')
     parser.add_argument('--filter-db', help='Filter by database')
     parser.add_argument('--filter-user', help='Filter by user')
-    parser.add_argument('--filter-connection-host', help='Filter by connection host')
-    parser.add_argument('--filter-process-host', help='Filter by process host')
-    parser.add_argument('--filter-process-name', help='Filter by process name')
-    parser.add_argument('--sort-db', help='Sort by process name')
-    parser.add_argument('--sort-query-id', choices=['desc', 'asc'], default='asc', help='Sort by query ID')
-    parser.add_argument('--sort-user', help='Sort by user')
-    parser.add_argument('--sort-process-host', help='Sort by process host')
-    parser.add_argument('--columns', default='id,user,db,process_id,process_host,process_cmdline,connection_status',
-                        help='Comma seperated list of column names')
+    parser.add_argument('--sort-asc',
+                        choices=['db', 'user', 'id', 'host', 'process_host'],
+                        help='Sort output by field in ascending order.')
+    parser.add_argument('--sort-desc',
+                        choices=['db', 'user', 'id', 'host', 'process_host'],
+                        help='Sort output by field in descending order.')
     parser.add_argument('--output-format', choices=['table', 'vertical'], default='table')
+    # TODO: Add column choice for output.
 
     args = parser.parse_args()
 
@@ -81,15 +78,19 @@ def main():
     if args.filter_user:
         filters.append(('user', args.filter_user))
 
-    # TODO implement all sort keys.
-    if args.sort_query_id:
-        sort = {'field': 'id', 'reverse': True if args.sort_query_id == 'desc' else False}
+    # Default sorting field is Query ID
+    sort = {'field': 'id', 'reverse': False}
+    if args.sort_asc:
+        sort = {'field': args.sort_asc, 'reverse': False}
+
+    if args.sort_desc:
+        sort = {'field': args.sort_desc, 'reverse': True}
 
     start_time = time.time()
     processes = kimo(get_config(args), filters=filters)
     total_time = time.time() - start_time
     logger.info('%d rows in set (%.2f sec)', len(processes), total_time)
-    print_result(processes, args.output_format, columns=args.columns, sort=sort)
+    print_result(processes, args.output_format, sort=sort)
 
 
 def get_config(args):
@@ -112,11 +113,10 @@ def get_config(args):
     return config
 
 
-def print_result(processes, output_format, columns=[], sort={'field': 'id', 'reverse': False}):
+def print_result(processes, output_format, sort={'field': 'id', 'reverse': False}):
     if not processes:
         return
 
-    # TODO take sort key from command line args
     reverse = sort['reverse']
     attr = sort['field']
     processes.sort(key=lambda x: getattr(x.process, attr), reverse=reverse)
