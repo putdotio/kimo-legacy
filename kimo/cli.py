@@ -38,10 +38,6 @@ def update_config(config, config_key, parser, parser_key):
 
 
 def main():
-    # TODO:
-    # Stop all running threads with Keyboard Interrupt
-    # Cache latest result on local disk.
-
     parser = argparse.ArgumentParser(description='Find processes of MySQL queries.')
 
     parser.add_argument('--logging-level', default='info', choices=['debug', 'info', 'warning', 'error'],
@@ -62,7 +58,6 @@ def main():
                         choices=['db', 'user', 'id', 'host', 'process_host'],
                         help='Sort output by field in descending order.')
     parser.add_argument('--output-format', choices=['table', 'vertical'], default='table')
-    # TODO: Add column choice for output.
 
     args = parser.parse_args()
 
@@ -94,6 +89,9 @@ def main():
 
 
 def get_config(args):
+    """
+    Get MySQL config via config file or command line.
+    """
     config = {
         'mysql_host': '127.0.0.1',
         'mysql_port': 3306,
@@ -114,6 +112,9 @@ def get_config(args):
 
 
 def print_result(processes, output_format, sort={'field': 'id', 'reverse': False}):
+    """
+    Print result in one of 2 forms: Table or Vertical.
+    """
     if not processes:
         return
 
@@ -179,18 +180,6 @@ def print_tabular(processes):
                 values.append(value)
 
         table_data.append(values)
-
-    # TODO:
-    # Info rowlar icin max 50 karakter gosterelim.
-    # Bir flagle bunu CLI ile de manuel ayarlayabilelim.
-    # sqlparse ise column isimlerini collapse edip SELECT, FROM, JOIN, WHERE vs. gibi
-    # onemli seyletri gostertelim: https://pypi.python.org/pypi/sqlparse
-    #  for r in result:
-    #      li = []
-    #      for key, value in r.iteritems():
-    #          if key in fields:
-    #              li.append(value)
-    #      table_data.append(li)
 
     table = AsciiTable(table_data)
     print table.table

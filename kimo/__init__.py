@@ -42,6 +42,11 @@ def kimo(config, filters=[]):
 
 
 def wrapper_find_process_details(process, config, result_queue):
+    """
+    Wrapper for find_process_details function.
+
+    Add find_process_details results to result_queue.
+    """
     parts = process.host.split(':')
     if len(parts) == 1:
         result_queue.put(EnhancedProcess(process=process, details=None))
@@ -59,6 +64,9 @@ def wrapper_find_process_details(process, config, result_queue):
 
 
 def cache_result(f):
+    """
+    Thread-safe cache decorator.
+    """
     c = Cache()
 
     @wraps(f)
@@ -73,7 +81,7 @@ class ConnectionNotFound(Exception):
 
 def find_process_details(host, port, config):
     """
-    Get the process id of the MySQL query.
+    Find the OS process id of a MySQL query.
 
     Sample flow is below:
 
@@ -132,6 +140,9 @@ def find_process_details(host, port, config):
 
 @cache_result
 def request_kimo_server(session, connect_host, config, cache_key=None):
+    """
+    Get kimo server connections from given host.
+    """
     kimo_server_url = 'http://' + connect_host + ':' + str(config['kimo_server_port']) + '/connections'
     logger.info('Getting connections from kimo-server at: %s', connect_host)
     response = session.get(kimo_server_url, timeout=(defaults.SERVER_CONNECT_TIMEOUT, defaults.SERVER_READ_TIMEOUT))
@@ -141,6 +152,9 @@ def request_kimo_server(session, connect_host, config, cache_key=None):
 
 @cache_result
 def request_tcpproxy_server(session, proxy_host, config, cache_key=None):
+    """
+    Get connections from tcpproxy from given host.
+    """
     logger.info("Getting connections from tcpproxy at: %s", proxy_host)
     tcpproxy_url = 'http://%s:%s/conns' % (proxy_host, config['tcpproxy_mgmt_port'])
     response = session.get(tcpproxy_url, timeout=(defaults.SERVER_CONNECT_TIMEOUT, defaults.SERVER_READ_TIMEOUT))
@@ -169,6 +183,9 @@ def request_tcpproxy_server(session, proxy_host, config, cache_key=None):
 
 
 def find_client_conn_from_kimo_server(connections, client_output_port):
+    """
+    Find related connection from kimo server.
+    """
     assert isinstance(client_output_port, (int, long))
     for conn in connections:
         if client_output_port == conn['laddr'][1]:
@@ -177,7 +194,7 @@ def find_client_conn_from_kimo_server(connections, client_output_port):
 
 def find_client_host_from_tcpproxy(conns, tcpproxy_output_port):
     """
-    Request tcp proxy server to get real client information.
+    Find related clien host from tcpproxy.
     """
     assert isinstance(tcpproxy_output_port, (int, long))
     for conn in conns:

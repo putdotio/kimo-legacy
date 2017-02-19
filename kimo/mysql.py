@@ -22,7 +22,6 @@ def get_process_list(config, filters=[]):
     rows = []
     try:
         cursor = connection.cursor()
-        # Create a new record
         columns = ','.join(Process._fields)
         cursor.execute('SELECT %s FROM PROCESSLIST' % columns)
         while True:
