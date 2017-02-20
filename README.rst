@@ -82,7 +82,7 @@ That's it!
 
 **TcpProxy**
 
-``kimo`` also works well if there is one or multiple `tcpproxy <https://github.com/cenkalti/tcpproxy>`_ proxies between MySQL and clients.
+``kimo`` also works well if there is one or multiple `tcpproxy <https://github.com/cenkalti/tcpproxy>`_ proxy servers between MySQL and clients.
 
 Example
 -------
@@ -100,7 +100,7 @@ Vertical Output:
 
 ::
 
-  kimo  --output-format vertical --sort-asc id --filter-query-id 1001
+  kimo  --output-format vertical --filter-query-id 1001
 
 ::
 
