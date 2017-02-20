@@ -19,7 +19,7 @@ Usage
 **Server-Side**
 
 
-First, we need to run ``kimo-server`` on each server that makes MySQL queries. We need to do this because, ``kimo-server`` gets connections from the host that ``kimo-server`` runs on and provides that information to client via HTTP API.
+First, we need to run ``kimo-server`` on each server that makes MySQL queries. We need to do this because ``kimo-server`` gets connections from the host that ``kimo-server`` runs on it and provides connections to client via HTTP API.
 
 ::
 
@@ -89,12 +89,16 @@ Example
 
 *Server-Side*
 
+First, we must start ``kimo-server``:
+
 ::
 
   sudo kimo-server --logging-level DEBUG --port 6000
 
 
 *Client-Side*
+
+We can get the output in vertical or table format.
 
 Vertical Output:
 
