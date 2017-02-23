@@ -1,3 +1,6 @@
+.. image:: https://badge.fury.io/py/kimo.svg
+    :target: https://badge.fury.io/py/kimo
+
 kimo
 ====
 
