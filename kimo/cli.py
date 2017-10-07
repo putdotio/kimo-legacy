@@ -1,8 +1,7 @@
-from __future__ import absolute_import
 import os
 import time
 import argparse
-from ConfigParser import SafeConfigParser
+from configparser import SafeConfigParser
 
 from terminaltables import AsciiTable
 
@@ -149,10 +148,10 @@ def print_vertical(processes):
     max_length = len(max(headers, key=len))
 
     for i, process in enumerate(processes, 1):
-        print '*********************** %s. row ***********************' % i
+        print('*********************** %s. row ***********************' % i)
         for attr in Process._fields:
             value = getattr(process.process, attr)
-            print attr.rjust(max_length) + ': ' + str(value)
+            print(attr.rjust(max_length) + ': ' + str(value))
 
         if process.details is None:
             pass
@@ -162,7 +161,7 @@ def print_vertical(processes):
         elif isinstance(process.details, ProcessDetails):
             for attr in ProcessDetails._fields:
                 value = getattr(process.details, attr)
-                print attr.rjust(max_length) + ': ' + str(value)
+                print(attr.rjust(max_length) + ': ' + str(value))
 
 
 def print_tabular(processes):
@@ -187,4 +186,4 @@ def print_tabular(processes):
         table_data.append(values)
 
     table = AsciiTable(table_data)
-    print table.table
+    print(table.table)

@@ -1,6 +1,5 @@
-from __future__ import absolute_import
 import logging
-import Queue
+from queue import Queue
 import threading
 from functools import wraps
 from collections import namedtuple
@@ -23,7 +22,7 @@ def kimo(config, filters=[]):
     process_list = get_process_list(config, filters=filters)
     logger.debug('Total processes from get_process_list: %d', len(process_list))
 
-    q = Queue.Queue()
+    q = Queue()
     threads = []
     for process in process_list:
         t = threading.Thread(target=wrapper_find_process_details, args=(process, config, q), name=process.host)
@@ -186,7 +185,7 @@ def find_client_conn_from_kimo_server(connections, client_output_port):
     """
     Find related connection from kimo server.
     """
-    assert isinstance(client_output_port, (int, long))
+    assert isinstance(client_output_port, int)
     for conn in connections:
         if client_output_port == conn['laddr'][1]:
             return conn
@@ -196,7 +195,7 @@ def find_client_host_from_tcpproxy(conns, tcpproxy_output_port):
     """
     Find related clien host from tcpproxy.
     """
-    assert isinstance(tcpproxy_output_port, (int, long))
+    assert isinstance(tcpproxy_output_port, int)
     for conn in conns:
         thost, tport = conn.proxy_output.split(':')
         tport = int(tport)
