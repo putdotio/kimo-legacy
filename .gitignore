@@ -1,0 +1,16 @@
+.project
+.pydevproject
+*.pyc
+*.pyo
+.project
+.pydevproject
+.settings
+*.swp
+/env
+.idea
+.DS_Store
+.vagrant
+.vagrant_new
+.cache/
+.mypy_cache/
+ubuntu-xenial-16.04-cloudimg-console.log
