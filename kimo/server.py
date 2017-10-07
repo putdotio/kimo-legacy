@@ -51,7 +51,10 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--host', default='0.0.0.0')
     parser.add_argument('--port', default=defaults.KIMO_SERVER_PORT)
-    parser.add_argument('--logging-level', default='info', choices=['debug', 'info', 'warning', 'error'],
+    parser.add_argument('--logging-level',
+                        default='info',
+                        choices=['debug', 'info', 'warning', 'error'],
+                        type=str.lower,
                         help='Print debug logs')
     args = parser.parse_args()
 

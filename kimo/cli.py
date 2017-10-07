@@ -40,7 +40,10 @@ def update_config(config, config_key, parser, parser_key):
 def main():
     parser = argparse.ArgumentParser(description='Find processes of MySQL queries.')
 
-    parser.add_argument('--logging-level', default='info', choices=['debug', 'info', 'warning', 'error'],
+    parser.add_argument('--logging-level',
+                        default='info',
+                        choices=['debug', 'info', 'warning', 'error'],
+                        type=str.lower,
                         help='Print debug logs')
     parser.add_argument('--host', help='Host of database')
     parser.add_argument('--user', help='User for database')
@@ -53,9 +56,11 @@ def main():
     parser.add_argument('--filter-user', help='Filter by user')
     parser.add_argument('--sort-asc',
                         choices=['db', 'user', 'id', 'host', 'process_host'],
+                        type=str.lower,
                         help='Sort output by field in ascending order.')
     parser.add_argument('--sort-desc',
                         choices=['db', 'user', 'id', 'host', 'process_host'],
+                        type=str.lower,
                         help='Sort output by field in descending order.')
     parser.add_argument('--output-format', choices=['table', 'vertical'], default='table')
 
