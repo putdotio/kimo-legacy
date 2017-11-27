@@ -20,7 +20,7 @@ setup(
     ],
     include_package_data=True,
     license='BSD License',
-    description='Finds owner processes of mysql queries.',
+    description='Finds owner processes of MySQL queries.',
     long_description=README,
     keywords='kimo mysql query monitor diagnostic',
     url='https://github.com/putdotio/kimo',

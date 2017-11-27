@@ -1,5 +1,6 @@
+from __future__ import absolute_import
 import logging
-from queue import Queue
+from Queue import Queue
 import threading
 from functools import wraps
 from collections import namedtuple
