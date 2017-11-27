@@ -4,7 +4,7 @@ from setuptools import setup
 README = open(os.path.join(os.path.dirname(__file__), 'README.rst')).read()
 
 
-version = '1.2'
+version = '1.2.1'
 
 setup(
     name='kimo',
