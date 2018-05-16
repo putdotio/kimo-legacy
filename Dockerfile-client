@@ -1,0 +1,17 @@
+# Use an official Python runtime as a parent image
+FROM python:3.5
+
+RUN apt update && apt install -y mysql-client
+
+# Set the working directory to /kimo
+WORKDIR /kimo
+
+# Copy the current directory contents into the container at /kimo
+ADD . /kimo
+
+RUN python setup.py install
+
+# Make port 80 available to the world outside this container
+EXPOSE 80
+
+ENTRYPOINT ["/bin/bash"]

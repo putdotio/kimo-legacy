@@ -1,0 +1,29 @@
+version: '3.2'
+services:
+  mysql:
+    build:
+      dockerfile: Dockerfile-mysql
+      context: .
+  tcpproxy:
+    build:
+      dockerfile: Dockerfile-tcpproxy
+      context: .
+    depends_on:
+      - mysql
+    tty: true
+    privileged: true
+  kimo-client:
+    build:
+      dockerfile: Dockerfile-client
+      context: .
+    depends_on:
+      - mysql
+    tty: true
+    privileged: true
+  kimo-server:
+    build:
+      dockerfile: Dockerfile-server
+      context: .
+    depends_on:
+      - mysql
+    tty: true

@@ -1,0 +1,11 @@
+# Start from a Debian image with the latest version of Go installed
+# and a workspace (GOPATH) configured at /go.
+FROM golang:1.9
+
+RUN go get github.com/cenkalti/tcpproxy
+
+RUN mkdir /app
+RUN cd /go/src/github.com/cenkalti/tcpproxy/cmd/tcpproxy; go build; cp tcpproxy /app/
+ENTRYPOINT ["/app/tcpproxy", "-m", "0.0.0.0:3307", "-s", "/var/mysql-proxy-state", "0.0.0.0:3306", "mysql:3306"]
+
+EXPOSE 3307
