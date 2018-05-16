@@ -10,6 +10,7 @@ setup(
     name='kimo',
     version=version,
     packages=['kimo'],
+    python_requires='>=3.5.2',
     install_requires=[
         'requests>=2',
         'Flask>=0.12',
