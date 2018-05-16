@@ -8,10 +8,11 @@ kimo
 
 Installation
 ------------
+``kimo`` works only with Python3.
 
 ::
 
- pip install kimo
+ pip3 install kimo
 
 Usage
 -----
@@ -78,7 +79,7 @@ There are some optional arguments for command line interface:
   }
   result = kimo(config)
   print result[0]
-  
+
   >>  EnhancedProcess(process=Process(id=1504, user=u'root', host=u'127.0.0.1:54553', db=u'information_schema', command=u'Query', time=547, state=u'User sleep', info=u'select sleep(100)'), details=ProcessDetails(pid=16430, name=u'python', cmdline=u'python -m putio.shell', hostname=u'vagrant.putio.club', connection_status=u'ESTABLISHED'))
 
 That's it!
@@ -134,7 +135,7 @@ Table Output:
 ::
 
   kimo  --output-format table --sort-asc id
- 
+
 ::
 
   +------+------+-----------------+--------------------+---------+------+------------+-------------------+------+--------+-----------------------+--------------------+-------------------+
