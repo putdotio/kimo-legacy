@@ -1,7 +1,7 @@
 import os
 import time
 import argparse
-from ConfigParser import SafeConfigParser
+from configparser import SafeConfigParser
 
 from terminaltables import AsciiTable
 
