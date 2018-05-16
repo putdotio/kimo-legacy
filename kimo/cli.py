@@ -111,7 +111,7 @@ def get_config(args):
     if args.password:
         config['mysql_password'] = args.password
 
-    if not config['mysql_host']:
+    if not args.host:
         if os.path.exists(args.mysql_config_file):
             load_mysql_config(args.mysql_config_file, config)
 
