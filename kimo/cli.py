@@ -9,6 +9,7 @@ from . import kimo, logger
 from . import defaults
 from .process import Process, ProcessDetails
 from .logging import setup_logging
+from ._version import __version__
 
 
 def load_mysql_config(mysql_config_path, config):
@@ -62,6 +63,8 @@ def main():
                         type=str.lower,
                         help='Sort output by field in descending order.')
     parser.add_argument('--output-format', choices=['table', 'vertical'], default='table')
+    parser.add_argument('--version', action='version',
+                        version='%(prog)s {version}'.format(version=__version__))
 
     args = parser.parse_args()
 

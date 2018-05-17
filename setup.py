@@ -4,11 +4,9 @@ from setuptools import setup
 README = open(os.path.join(os.path.dirname(__file__), 'README.rst')).read()
 
 
-version = '2.0.2'
-
 setup(
     name='kimo',
-    version=version,
+    version=open("kimo/_version.py").readlines()[-1].split()[-1].strip("\"'"),
     packages=['kimo'],
     python_requires='>=3.5.2',
     install_requires=[
