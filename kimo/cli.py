@@ -104,16 +104,15 @@ def get_config(args):
         'tcpproxy_mgmt_port': args.tcpproxy_mgmt_port,
         'kimo_server_port': args.kimo_server_port,
     }
+    if os.path.exists(args.mysql_config_file):
+        load_mysql_config(args.mysql_config_file, config)
+
     if args.host:
         config['mysql_host'] = args.host
     if args.user:
         config['mysql_user'] = args.user
     if args.password:
         config['mysql_password'] = args.password
-
-    if not args.host:
-        if os.path.exists(args.mysql_config_file):
-            load_mysql_config(args.mysql_config_file, config)
 
     return config
 
