@@ -163,7 +163,7 @@ def request_tcpproxy_server(session, proxy_host, config, cache_key=None):
     # Sample Output:
     # 10.0.4.219:36149 -> 10.0.0.68:3306 -> 10.0.0.68:35423 -> 10.0.0.241:3306
     # <client>:<output_port> -> <proxy>:<input_port> -> <proxy>:<output_port>: -> <mysql>:<input_port>
-    connection_lines = response.content.split('\n')
+    connection_lines = response.text.split('\n')
     logger.debug('%d lines of tcpproxy output.', len(connection_lines))
 
     items = []
