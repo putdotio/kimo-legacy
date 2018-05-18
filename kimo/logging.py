@@ -7,8 +7,8 @@ FORMAT = "[%(asctime)s] Thread(%(threadName)s) %(levelname)s %(name)s:%(funcName
 
 def setup_logging(level):
     level = getattr(logging, level.upper())
-    h = logging.StreamHandler()
-    h.setLevel(level)
-    h.setFormatter(logging.Formatter(FORMAT))
+    file_handler = logging.FileHandler("/var/log/kimo.log")
+    file_handler.setLevel(level)
+    file_handler.setFormatter(logging.Formatter(FORMAT))
     logger.setLevel(level)
-    logger.addHandler(h)
+    logger.addHandler(file_handler)
