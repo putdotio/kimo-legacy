@@ -54,6 +54,10 @@ def main():
     parser.add_argument('--filter-query-id', type=int, help='Filter by query ID')
     parser.add_argument('--filter-db', help='Filter by database')
     parser.add_argument('--filter-user', help='Filter by user')
+    parser.add_argument('--columns',
+                        type=str,
+                        help='Comma separated columns. Available options: {t}'.format(
+                            t=Process._fields + ProcessDetails._fields))
     parser.add_argument('--sort-asc',
                         choices=['db', 'user', 'id', 'host', 'process_host'],
                         type=str.lower,
@@ -88,11 +92,15 @@ def main():
     if args.sort_desc:
         sort = {'field': args.sort_desc, 'reverse': True}
 
+    columns = Process._fields + ProcessDetails._fields
+    if args.columns:
+        columns = [column for column in args.columns.split(',')]
+
     start_time = time.time()
     processes = kimo(get_config(args), filters=filters)
     total_time = time.time() - start_time
     logger.info('%d rows in set (%.2f sec)', len(processes), total_time)
-    print_result(processes, args.output_format, sort=sort)
+    print_result(processes, args.output_format, columns, sort=sort)
 
 
 def get_config(args):
@@ -120,7 +128,7 @@ def get_config(args):
     return config
 
 
-def print_result(processes, output_format, sort={'field': 'id', 'reverse': False}):
+def print_result(processes, output_format, columns, sort={'field': 'id', 'reverse': False}):
     """
     Print result in one of 2 forms: Table or Vertical.
     """
@@ -135,10 +143,10 @@ def print_result(processes, output_format, sort={'field': 'id', 'reverse': False
             'table': print_tabular,
             'vertical': print_vertical,
     }
-    printers[output_format](processes)
+    printers[output_format](processes, columns)
 
 
-def print_vertical(processes):
+def print_vertical(processes, headers):
     """
     Print with leftpad like MySQL \G mode.
 
@@ -149,14 +157,14 @@ def print_vertical(processes):
     Command: python
 
     """
-    headers = Process._fields + ProcessDetails._fields
     max_length = len(max(headers, key=len))
 
     for i, process in enumerate(processes, 1):
         print('*********************** %s. row ***********************' % i)
         for attr in Process._fields:
-            value = getattr(process.process, attr)
-            print(attr.rjust(max_length) + ': ' + str(value))
+            if attr in headers:
+                value = getattr(process.process, attr)
+                print(attr.rjust(max_length) + ': ' + str(value))
 
         if process.details is None:
             pass
@@ -165,18 +173,31 @@ def print_vertical(processes):
             pass
         elif isinstance(process.details, ProcessDetails):
             for attr in ProcessDetails._fields:
-                value = getattr(process.details, attr)
-                print(attr.rjust(max_length) + ': ' + str(value))
+                if attr in headers:
+                    value = getattr(process.details, attr)
+                    print(attr.rjust(max_length) + ': ' + str(value))
 
 
-def print_tabular(processes):
-    headers = Process._fields + ProcessDetails._fields
+def print_tabular(processes, headers):
+    """
+    Print output in table format. Example:
+
+    +------+------+-----------------+--------------------+
+    | id   | user | host            | db                 |
+    +------+------+-----------------+--------------------+
+    | 1202 | root | 127.0.0.1:54668 | information_schema |
+    +------+------+-----------------+--------------------+
+    | 1207 | root | 127.0.0.1:54593 | information_schema |
+    +------+------+-----------------+--------------------+
+    """
     table_data = [headers]
+
     for process in processes:
         values = []
         for attr in Process._fields:
-            value = getattr(process.process, attr)
-            values.append(value)
+            if attr in headers:
+                value = getattr(process.process, attr)
+                values.append(value)
 
         if process.details is None:
             pass
@@ -185,8 +206,9 @@ def print_tabular(processes):
             pass
         elif isinstance(process.details, ProcessDetails):
             for attr in ProcessDetails._fields:
-                value = getattr(process.details, attr)
-                values.append(value)
+                if attr in headers:
+                    value = getattr(process.details, attr)
+                    values.append(value)
 
         table_data.append(values)
 
